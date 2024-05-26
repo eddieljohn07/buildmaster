@@ -80,18 +80,22 @@
     .button {
         width: 2em;
         height: 2em;
-        background-color: black;
+        background-color: rgb(230, 230, 230);
         display: flex;
         justify-content: center;
         align-items: center;
         font-size: 24px;
         color: white;
-        border-radius: 10px;
+        border-radius: 50%;
         margin: 5px;
         cursor: pointer;
     }
     .button:hover {
-        background-color: darkgray;
+        background-color: rgb(135, 22, 241);
+    }
+
+    .directional-button{
+        width: 2.1em;
     }
     .squares-container {
         height: 100vh;
@@ -119,12 +123,12 @@
     <div id="message-box"></div>
     <div id="button-container">
         <div class="up-but">
-            <div class="button" id="up">&#9650;</div>
+            <div class="button" id="up"><img class="directional-button" src="images/up-arrow.svg"></div>
         </div>
         <div class="down-but">
-            <div class="button" id="left">&#9664;</div>
-            <div class="button" id="down">&#9660;</div>
-            <div class="button" id="right">&#9654;</div>
+            <div class="button" id="left"><img class="directional-button" src="images/left-arrow.svg"></div>
+            <div class="button" id="down"><img class="directional-button" src="images/down-arrow.svg"></div>
+            <div class="button" id="right"><img class="directional-button" src="images/right-arrow.svg"></div>
         </div>
     </div>
 
