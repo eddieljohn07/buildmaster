@@ -1,0 +1,9 @@
+*{
+    font-family: "Encode Sans Expanded", sans-serif;
+}
+
+body {
+    background: url(images/bg.webp);
+    background-size: cover;
+    margin: 0;
+}

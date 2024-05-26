@@ -1,1 +1,1 @@
-# buildmaster
+# pc-builder-educational

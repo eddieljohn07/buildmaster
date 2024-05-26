@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buildmaster</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Encode+Sans+Expanded:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+</head>
+<style>
+    body {
+        background: url(images/bg.webp);
+        background-size: cover;
+        margin: 0;
+        overflow: hidden;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .container {
+        position: relative;
+        width: 80%;
+        height: 80%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+    .square {
+        width: 5em;
+        height: 5em;
+        box-sizing: border-box;
+        margin: 1em;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 0;
+    }
+    .square img {
+        height: 100%;
+    }
+    #circle {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 1;
+    }
+    #circle img {
+        width: 100%;
+        border-radius: 50%;
+    }
+    #message-box {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        display: none;
+        background-color: rgba(0, 0, 0, 0.7);
+        color: white;
+        padding: 20px;
+        text-align: center;
+        z-index: 2;
+        font-size: 1em;
+    }
+    #button-container {
+        position: absolute;
+        bottom: 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    .down-but {
+        display: flex;
+    }
+    .button {
+        width: 2em;
+        height: 2em;
+        background-color: black;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 24px;
+        color: white;
+        border-radius: 10px;
+        margin: 5px;
+        cursor: pointer;
+    }
+    .button:hover {
+        background-color: darkgray;
+    }
+    .squares-container {
+        height: 100vh;
+        margin: 0;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+    }
+    .data-img {
+        max-height: 30em;
+        max-width: 90%;
+    }
+</style>
+<body>
+    <div class="container">
+        <div id="circle">
+            <img src="images/sprite.gif">
+        </div>
+        <div class="squares-container" id="squares-container-top">
+            <div class="square" data-message="<img class='data-img' src='https://images.unsplash.com/photo-1601541984851-6779505c272c?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'> <br> CPU: Ensure the CPU socket type (e.g., Intel LGA 1200, AMD AM4) matches the motherboard for compatibility, and check the motherboard's chipset for CPU support.">
+                <img src="images/cpu.webp">
+            </div>
+            <div class="square" data-message="<img class='data-img' src='https://images.unsplash.com/photo-1660855551570-dd44e0ab800c?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'> <br> Case: Ensure the case size (ATX, Micro-ATX, Mini-ITX) matches the motherboard form factor and has sufficient space for the GPU and cooling solutions.">
+                <img src="images/case.webp">
+            </div>
+            <div class="square" data-message="<img class='data-img' src='https://images.unsplash.com/photo-1531492746076-161ca9bcad58?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'> <br>  HDD: Ensure it has compatible connectors (typically SATA) and the case has sufficient 3.5inches or 2.5inches drive bays, along with enough power connectors from the PSU.">
+                <img src="images/hdd.webp">
+            </div>
+            <div class="square" data-message="<img class='data-img' src='https://images.unsplash.com/photo-1699796990063-ee34d2eef5e2?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'> <br> RAM: Match the RAM type (e.g., DDR3, DDR4) and speed (MHz) with the motherboard specifications, and ensure the motherboard has enough RAM slots for the desired capacity.">
+                <img src="images/ram.webp">
+            </div>
+            <div class="square" data-message="<img class='data-img' src='https://images.unsplash.com/photo-1674660529961-fd2fd2f3e025?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NTh8fHNzZHxlbnwwfHwwfHx8Mg%3D%3D'> <br> SSD: Ensure compatibility with motherboard connectors (SATA for 2.5inches SSDs, M.2 or PCIe for NVMe SSDs) and available slots, and check that the case has the necessary mounting points.">
+                <img src="images/ssd.webp">
+            </div>
+            <div class="square" data-message="<img class='data-img' src='https://images.unsplash.com/photo-1716062890647-60feae0609d0?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8UFNVfGVufDB8fDB8fHwy'> <br> PSU: Choose a PSU with sufficient wattage to power all components, and verify it has the necessary connectors (e.g., 24-pin for motherboard, 6/8-pin for GPU).">
+                <img src="images/psu.webp">
+            </div>
+            <div class="square" data-message="<img class='data-img' src='https://images.unsplash.com/photo-1591489378430-ef2f4c626b35?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fGdwdXxlbnwwfHwwfHx8Mg%3D%3D'> <br> Ensure the GPU fits within the case dimensions and has adequate cooling, and check that the PSU has sufficient power and the necessary connectors (6-pin, 8-pin).">
+                <img src="images/gpu.webp">
+            </div>
+            <div class="square" data-message="<img class='data-img' src='https://images.unsplash.com/photo-1712701815718-29f5fe510c0e?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'> <br> Motherboard: It includes slots and ports for expanding the system's capabilities, so ensure it supports the CPU socket type, RAM type and speed, and has enough PCIe slots for GPUs and other expansion cards.">
+                <img src="images/motherboard.webp">
+            </div>
+            <div class="square" data-message="<img class='data-img' src='https://images.unsplash.com/photo-1587202372775-e229f172b9d7?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'> <br> Case fan: Ensure the fan size (e.g., 120mm, 140mm) matches the case mounts, and check the motherboard for available fan headers or use a fan controller if needed.">
+                <img src="images/case_fan.webp">
+            </div>
+            <div class="square" data-message="<img class='data-img' src='https://images.unsplash.com/photo-1601118447646-85593309ac5a?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'> <br> CPU cooler: Ensure compatibility with the CPU socket type, and check the case clearance to make sure the cooler fits without obstructing other components.">
+                <img src="images/cpu_fan.webp">
+            </div>
+        </div>
+    </div>
+    <div id="message-box"></div>
+    <div id="button-container">
+        <div class="up-but">
+            <div class="button" id="up">&#9650;</div>
+        </div>
+        <div class="down-but">
+            <div class="button" id="left">&#9664;</div>
+            <div class="button" id="down">&#9660;</div>
+            <div class="button" id="right">&#9654;</div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const circle = document.getElementById('circle');
+            const messageBox = document.getElementById('message-box');
+            const buttons = document.querySelectorAll('.button');
+            const squares = document.querySelectorAll('.square');
+            let squaresTouched = 0;
+            let moveInterval = null;
+            let speed = 8;
+            let congratulatoryTimeout = null;
+            let gameCompleted = false;
+
+            function doRectanglesIntersect(rect1, rect2) {
+                return !(rect1.right < rect2.left ||
+                    rect1.left > rect2.right ||
+                    rect1.bottom < rect2.top ||
+                    rect1.top > rect2.bottom);
+            }
+
+            buttons.forEach(button => {
+                let pressed = false;
+
+                button.addEventListener('mousedown', () => {
+                    if (gameCompleted) return;
+                    pressed = true;
+                    moveCircle(button.id);
+                    moveInterval = setInterval(() => {
+                        moveCircle(button.id);
+                    }, 50);
+                });
+
+                button.addEventListener('mouseup', () => {
+                    clearInterval(moveInterval);
+                    pressed = false;
+                });
+
+                button.addEventListener('mouseleave', () => {
+                    clearInterval(moveInterval);
+                    pressed = false;
+                });
+            });
+
+            document.addEventListener('keydown', (event) => {
+                if (gameCompleted) return;
+                const key = event.key;
+
+                switch (key) {
+                    case 'ArrowUp':
+                        moveCircle('up');
+                        break;
+                    case 'ArrowDown':
+                        moveCircle('down');
+                        break;
+                    case 'ArrowLeft':
+                        moveCircle('left');
+                        break;
+                    case 'ArrowRight':
+                        moveCircle('right');
+                        break;
+                    case 'w':
+                        moveCircle('up');
+                        break;
+                        case 's':
+                        moveCircle('down');
+                        break;
+                    case 'a':
+                        moveCircle('left');
+                        break;
+                    case 'd':
+                        moveCircle('right');
+                        break;
+                    default:
+                        break;
+                }
+            });
+
+            function moveCircle(direction) {
+                if (gameCompleted) return;
+
+                const currentPosition = {
+                    x: circle.offsetLeft,
+                    y: circle.offsetTop
+                };
+
+                switch (direction) {
+                    case 'up':
+                        circle.style.top = `${Math.max(0, currentPosition.y - speed)}px`;
+                        break;
+                    case 'down':
+                        circle.style.top = `${Math.min(window.innerHeight - circle.offsetHeight, currentPosition.y + speed)}px`;
+                        break;
+                    case 'left':
+                        circle.style.left = `${Math.max(0, currentPosition.x - speed)}px`;
+                        break;
+                    case 'right':
+                        circle.style.left = `${Math.min(window.innerWidth - circle.offsetWidth, currentPosition.x + speed)}px`;
+                        break;
+                    default:
+                        break;
+                }
+
+                checkCollision();
+            }
+
+            function checkCollision() {
+                const circleRect = circle.getBoundingClientRect();
+                let messageDisplayed = false;
+
+                squares.forEach(square => {
+                    const squareRect = square.getBoundingClientRect();
+
+                    if (doRectanglesIntersect(circleRect, squareRect)) {
+                        if (!square.classList.contains('touched')) {
+                            square.classList.add('touched');
+                            squaresTouched++;
+                        }
+                        const message = square.getAttribute('data-message');
+                        messageBox.innerHTML = message; 
+                        messageBox.style.display = 'block';
+                        messageBox.style.width = '70%';
+
+                        messageDisplayed = true;
+                    }
+                });
+
+                if (!messageDisplayed) {
+                    messageBox.style.display = 'none';
+                }
+
+                if (squaresTouched === squares.length && !congratulatoryTimeout) {
+                    congratulatoryTimeout = setTimeout(showCongratulatoryMessage, 12000);
+                }
+            }
+
+            function showCongratulatoryMessage() {
+                gameCompleted = true;
+                messageBox.innerHTML = 'Congratulations on gaining a comprehensive understanding of PC component compatibility! Your dedication to learning about the compatibility between each parts showcases your commitment to mastering the intricacies of assembling and upgrading computer systems. Keep up the excellent work, and continue delving into the fascinating realm of PC hardware compatibility!<br>';
+                const continueButton = document.createElement('button');
+                continueButton.innerText = 'Continue';
+                continueButton.addEventListener('click', () => {
+                    window.location.href = 'compatibility-quiz.html';
+                });
+                const refreshButton = document.createElement('button');
+                refreshButton.innerText = 'Relearn';
+                refreshButton.addEventListener('click', () => {
+                    window.location.reload();
+                });
+                messageBox.appendChild(continueButton);
+                messageBox.appendChild(refreshButton);
+                messageBox.style.display = 'block';
+            }
+        });
+    </script>
+</body>
+</html>

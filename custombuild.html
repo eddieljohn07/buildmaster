@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buildmaster</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #282c34;
+            color: white;
+            justify-content: center;
+        }
+        .container {
+            max-width: 800px;
+            text-align: center;
+            margin-top: 2em;
+        }
+        h1 {
+            margin-bottom: 20px;
+        }
+        label {
+            color: white;
+        }
+        select {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+        }
+        button {
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+        .result {
+            margin-top: 20px;
+        }
+        .back-button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            cursor: pointer;
+            background-color: #61dafb;
+            border: none;
+            color: black;
+        }
+
+        select{
+            min-width: 50%;
+            max-width: 90%;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Custom Build</h1>
+        <form id="pc-form">
+            <label for="cpu">CPU:</label>
+            <select id="cpu">
+            </select>
+
+            <label for="gpu">GPU:</label>
+            <select id="gpu">
+            </select>
+
+            <label for="ram">RAM:</label>
+            <select id="ram">
+            </select>
+
+            <label for="storage">Storage:</label>
+            <select id="storage">
+            </select>
+
+            <label for="psu">PSU:</label>
+            <select id="psu">
+            </select>
+
+            <label for="case">Case:</label>
+            <select id="case">
+            </select>
+
+            <button type="button" onclick="evaluateBuild()">Evaluate Build</button>
+        </form>
+        <div class="result" id="result"></div>
+        <button class="back-button" onclick="goBack()">Back</button>
+    </div>
+
+    <script>
+        const components = {
+            cpu: [
+                { name: "Intel i3", level: "budget" },
+                { name: "AMD Ryzen 3", level: "budget" },
+                { name: "Intel i5", level: "moderate" },
+                { name: "AMD Ryzen 5", level: "moderate" },
+                { name: "Intel i7", level: "high" },
+                { name: "AMD Ryzen 7", level: "high" },
+                { name: "Intel i9", level: "high" },
+                { name: "AMD Ryzen 9", level: "high" },
+                { name: "Intel Xeon", level: "high" },
+                { name: "AMD Threadripper", level: "high" }
+            ],
+            gpu: [
+                { name: "NVIDIA GTX 1050", level: "budget" },
+                { name: "AMD RX 560", level: "budget" },
+                { name: "NVIDIA GTX 1650", level: "budget" },
+                { name: "AMD RX 570", level: "budget" },
+                { name: "NVIDIA GTX 1660", level: "moderate" },
+                { name: "AMD RX 580", level: "moderate" },
+                { name: "NVIDIA RTX 2060", level: "high" },
+                { name: "AMD RX 5600", level: "high" },
+                { name: "NVIDIA RTX 3080", level: "high" },
+                { name: "AMD RX 6900", level: "high" }
+            ],
+            ram: [
+                { name: "8GB DDR4", level: "budget" },
+                { name: "16GB DDR4", level: "moderate" },
+                { name: "32GB DDR4", level: "high" }
+            ],
+            storage: [
+                { name: "500GB HDD", level: "budget" },
+                { name: "1TB HDD", level: "budget" },
+                { name: "250GB SSD", level: "budget" },
+                { name: "500GB SSD", level: "moderate" },
+                { name: "1TB SSD", level: "high" },
+                { name: "2TB SSD", level: "high" }
+            ],
+            psu: [
+                { name: "400W PSU", level: "budget" },
+                { name: "500W PSU", level: "moderate" },
+                { name: "600W PSU", level: "moderate" },
+                { name: "750W PSU", level: "high" },
+                { name: "1000W PSU", level: "high" }
+            ],
+            case: [
+                { name: "Budget Case", level: "budget" },
+                { name: "Mid-range Case", level: "moderate" },
+                { name: "High-end Case", level: "high" }
+            ]
+        };
+
+        function populateSelect(id, options) {
+            const select = document.getElementById(id);
+            options.forEach(option => {
+                const opt = document.createElement("option");
+                opt.value = option.level;
+                opt.textContent = option.name;
+                select.appendChild(opt);
+            });
+        }
+
+        function populateAllSelects() {
+            Object.keys(components).forEach(key => {
+                populateSelect(key, components[key]);
+            });
+        }
+
+        function evaluateBuild() {
+            const levels = {
+                budget: 1,
+                moderate: 2,
+                high: 3
+            };
+
+            let totalScore = 0;
+
+            document.querySelectorAll("select").forEach(select => {
+                totalScore += levels[select.value];
+            });
+
+            const resultDiv = document.getElementById("result");
+            if (totalScore <= 7) {
+                resultDiv.textContent = "This PC is suitable for light gaming and office work, light video editing.";
+            } else if (totalScore <= 14) {
+                resultDiv.textContent = "This PC is suitable for moderate gaming and office work, video editing.";
+            } else {
+                resultDiv.textContent = "This PC is suitable for heavy gaming and heavy video editing.";
+            }
+        }
+
+        function goBack() {
+            window.location.href='home-custbuild.html';
+        }
+
+        document.addEventListener("DOMContentLoaded", populateAllSelects);
+    </script>
+</body>
+</html>

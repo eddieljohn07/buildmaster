@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BuildMaster</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Encode+Sans+Expanded:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+</head>
+<style>
+ body {
+        background: url(images/bg.webp);
+        background-size: cover;
+        margin: 0;
+        overflow: hidden;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        }
+
+.container {
+    width: 50%;
+    margin: 3em .5em 5em .5em;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+    background: white;
+    margin-top: 10%;
+    width: 80%;
+}
+
+h1 {
+    text-align: center;
+}
+
+#timer {
+    text-align: center;
+    font-size: 1.5em;
+    margin-bottom: 20px;
+}
+
+.question {
+    margin-bottom: 15px;
+}
+
+button {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    font-size: 1em;
+    cursor: pointer;
+}
+
+#result {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 1.2em;
+}
+
+button{
+    max-width: 40%;
+}
+
+#quiz-form{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+</style>
+<body>
+    <div class="container">
+        <h1>Computer Components<br> Explore Quiz</h1>
+        <div id="timer">Time left: 3:00</div>
+        <form id="quiz-form">
+            <div class="question" id="question1">
+                <p>What is the primary function of the CPU?</p>
+                <input type="radio" id="q1a" name="q1" value="A">
+                <label for="q1a">A) Store data</label><br>
+                <input type="radio" id="q1b" name="q1" value="B">
+                <label for="q1b">B) Execute instructions and perform calculations</label><br>
+                <input type="radio" id="q1c" name="q1" value="C">
+                <label for="q1c">C) Provide power to components</label><br>
+                <input type="radio" id="q1d" name="q1" value="D">
+                <label for="q1d">D) Connect different components</label>
+            </div>
+            <div class="question" id="question2" style="display:none;">
+                <p>Which component houses all internal components and influences airflow and cooling?</p>
+                <input type="radio" id="q2a" name="q2" value="A">
+                <label for="q2a">A) PSU</label><br>
+                <input type="radio" id="q2b" name="q2" value="B">
+                <label for="q2b">B) Case</label><br>
+                <input type="radio" id="q2c" name="q2" value="C">
+                <label for="q2c">C) Motherboard</label><br>
+                <input type="radio" id="q2d" name="q2" value="D">
+                <label for="q2d">D) GPU</label>
+            </div>
+            <div class="question" id="question3" style="display:none;">
+                <p>What type of storage is typically used for bulk storage of files and applications due to its high capacity and low cost per gigabyte?</p>
+                <input type="radio" id="q3a" name="q3" value="A">
+                <label for="q3a">A) SSD</label><br>
+                <input type="radio" id="q3b" name="q3" value="B">
+                <label for="q3b">B) RAM</label><br>
+                <input type="radio" id="q3c" name="q3" value="C">
+                <label for="q3c">C) HDD</label><br>
+                <input type="radio" id="q3d" name="q3" value="D">
+                <label for="q3d">D) CPU</label>
+            </div>
+            <div class="question" id="question4" style="display:none;">
+                <p>Which component temporarily stores data for quick access by the CPU, improving system responsiveness?</p>
+                <input type="radio" id="q4a" name="q4" value="A">
+                <label for="q4a">A) SSD</label><br>
+                <input type="radio" id="q4b" name="q4" value="B">
+                <label for="q4b">B) HDD</label><br>
+                <input type="radio" id="q4c" name="q4" value="C">
+                <label for="q4c">C) RAM</label><br>
+                <input type="radio" id="q4d" name="q4" value="D">
+                <label for="q4d">D) PSU</label>
+            </div>
+            <div class="question" id="question5" style="display:none;">
+                <p>Which storage device is known for its fast read and write speeds and is essential for quick boot times?</p>
+                <input type="radio" id="q5a" name="q5" value="A">
+                <label for="q5a">A) HDD</label><br>
+                <input type="radio" id="q5b" name="q5" value="B">
+                <label for="q5b">B) GPU</label><br>
+                <input type="radio" id="q5c" name="q5" value="C">
+                <label for="q5c">C) RAM</label><br>
+                <input type="radio" id="q5d" name="q5" value="D">
+                <label for="q5d">D) SSD</label>
+            </div>
+            <button type="submit" style="display:none;">Submit</button>
+        </form>
+        <div id="result"></div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+    const form = document.getElementById('quiz-form');
+    const timerElement = document.getElementById('timer');
+    const resultElement = document.getElementById('result');
+
+    const correctAnswers = {
+        q1: 'B',
+        q2: 'B',
+        q3: 'C',
+        q4: 'C',
+        q5: 'D'
+    };
+
+    let timeLeft = 180;
+    let currentQuestion = 1;
+
+    const countdown = setInterval(() => {
+        if (timeLeft <= 0) {
+            clearInterval(countdown);
+            failQuiz();
+            return;
+        }
+
+        timeLeft--;
+        updateTimer();
+    }, 1000);
+
+    function updateTimer() {
+        const minutes = Math.floor(timeLeft / 60);
+        const seconds = timeLeft % 60;
+        timerElement.textContent = `Time left: ${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+    }
+
+    function failQuiz() {
+        resultElement.textContent = 'Time is up! You failed the quiz. Please try again.';
+                const retryButton = document.createElement('button');
+                retryButton.textContent = 'Retry Quiz';
+                retryButton.addEventListener('click', function () {
+                    window.location.href = 'explore-quiz.html';
+                });
+                document.body.appendChild(retryButton);
+                form.style.display = 'none';
+    }
+
+    function showNextQuestion() {
+        document.getElementById(`question${currentQuestion}`).style.display = 'none';
+        currentQuestion++;
+        if (currentQuestion <= 5) {
+            document.getElementById(`question${currentQuestion}`).style.display = 'block';
+        } else {
+            document.querySelector('button[type="submit"]').style.display = 'block';
+        }
+    }
+
+    form.addEventListener('change', function (event) {
+        if (event.target.name.startsWith('q')) {
+            setTimeout(showNextQuestion, 500);
+        }
+    });
+
+    form.addEventListener('submit', function (event) {
+        event.preventDefault();
+
+        clearInterval(countdown);
+
+        const formData = new FormData(form);
+        let allCorrect = true;
+
+        for (const [key, value] of formData.entries()) {
+            if (value !== correctAnswers[key]) {
+                allCorrect = false;
+                break;
+            }
+        }
+
+        if (allCorrect) {
+            resultElement.textContent = 'Congratulations! You passed the quiz.';
+            const continueButton = document.createElement('button');
+                continueButton.textContent = 'Continue';
+                continueButton.addEventListener('click', function () {
+                    window.location.href = 'home_comp.html';
+                });
+                document.body.appendChild(continueButton);
+                form.style.display = 'none';
+            
+            } else {
+                resultElement.textContent = 'You did not pass the quiz. Please try again.';
+                const retryButton = document.createElement('button');
+                retryButton.textContent = 'Retry Quiz';
+                retryButton.addEventListener('click', function () {
+                    window.location.href = 'explore-quiz.html';
+                });
+                document.body.appendChild(retryButton);
+                form.style.display = 'none';
+            }
+        });
+
+        updateTimer();
+    });
+
+    </script>
+</body>
+</html>

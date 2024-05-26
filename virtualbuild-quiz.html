@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buildmaster</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            text-align: center;
+        }
+
+        h1 {
+            margin-bottom: 30px;
+            margin-top: 0;
+            color: white;
+        }
+
+        .steps {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .step {
+            background-color: #f0f0f0;
+            padding: 10px 20px;
+            margin: 5px;
+            cursor: pointer;
+        }
+
+        .image-container {
+            margin-top: 30px;
+        }
+
+        #stepImage {
+            max-width: 100%;
+        }
+
+        .correct {
+            opacity: 0.5;
+        }
+
+        .completed {
+            pointer-events: none;
+        }
+
+        .popup {
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            display: none;
+            width: 90%;
+        }
+
+        .popup img {
+            max-width: 100%;
+        }
+
+        .popup button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+
+        .error-popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #ffcccc;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            display: none;
+        }
+
+        .error-popup button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Virtual PC Builder</h1>
+        <div class="steps" id="steps">
+            <div class="step" onclick="checkStep(0)">Place Motherboard</div>
+            <div class="step" onclick="checkStep(1)">Put the CPU</div>
+            <div class="step" onclick="checkStep(2)">Put on top of the CPU the CPU Cooler</div>
+            <div class="step" onclick="checkStep(3)">Install the RAM</div>
+            <div class="step" onclick="checkStep(4)">Install the motherboard in the Case</div>
+            <div class="step" onclick="checkStep(5)">Install the PSU inside the Case</div>
+            <div class="step" onclick="checkStep(6)">Install the storage such as HDD and SSD</div>
+            <div class="step" onclick="checkStep(7)">Install the GPU</div>
+        </div>
+        <div class="image-container">
+            <img src="images/place_motherboard.webp" id="stepImage"><br>
+        </div>
+        <div class="popup" id="popup">
+            <h2>Congratulations on Building Your Virtual PC</h2>
+            <img src="images/final_PC.webp" alt="Virtual PC">
+            <br>    <button onclick="proceed()">Continue</button>
+        </div>
+        <div class="error-popup" id="error-popup">
+            <h2>Incorrect step. Please complete the previous step first.</h2>
+            <button onclick="closeErrorPopup()">Close</button>
+        </div>
+    </div>
+
+    <script>
+        const correctOrder = [
+            'Place Motherboard',
+            'Put the CPU',
+            'Put on top of the CPU the CPU Cooler',
+            'Install the RAM',
+            'Install the motherboard in the Case',
+            'Install the PSU inside the Case',
+            'Install the storage such as HDD and SSD',
+            'Install the GPU'
+        ];
+
+        const stepImages = [
+            'motherboard.webp',
+            'place_motherboard.webp',
+            'place_cpu.webp',
+            'put_cpu_fan.webp',
+            'put_ram.webp',
+            'put_case.webp',
+            'put_psu.webp',
+            'put_storage.webp',
+            'put_gpu.webp'
+        ];
+
+        let currentStepIndex = 0;
+
+        const stepsContainer = document.getElementById('steps');
+        const steps = Array.from(stepsContainer.children);
+        for (let i = steps.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [steps[i], steps[j]] = [steps[j], steps[i]];
+        }
+        steps.forEach((step, index) => {
+            stepsContainer.appendChild(step);
+            step.setAttribute('onclick', `checkStep(${index})`);
+        });
+
+        function checkStep(index) {
+            const selectedStep = document.querySelectorAll('.step')[index].textContent;
+            if (selectedStep === correctOrder[currentStepIndex]) {
+                document.querySelectorAll('.step')[index].classList.add('correct', 'completed');
+                currentStepIndex++;
+                if (currentStepIndex === correctOrder.length) {
+                    document.getElementById('stepImage').src = `images/${stepImages[currentStepIndex - 1]}`;
+                    showPopup();
+                    steps.forEach(step => step.classList.add('completed'));
+                } else {
+                    document.getElementById('stepImage').src = `images/${stepImages[currentStepIndex]}`;
+                }
+            } else {
+                showErrorPopup();
+            }
+        }
+
+        function showPopup() {
+            document.getElementById('popup').style.display = 'block';
+        }
+
+        function showErrorPopup() {
+            document.getElementById('error-popup').style.display = 'block';
+        }
+
+        function closeErrorPopup() {
+            document.getElementById('error-popup').style.display = 'none';
+        }
+
+        function proceed() {
+            window.location.href = 'home-custbuild.html';
+        }
+    </script>
+</body>
+</html>
