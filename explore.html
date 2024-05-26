@@ -175,61 +175,58 @@
             }
 
             buttons.forEach(button => {
-                let pressed = false;
-
                 button.addEventListener('mousedown', () => {
                     if (gameCompleted) return;
-                    pressed = true;
-                    moveCircle(button.id);
-                    moveInterval = setInterval(() => {
-                        moveCircle(button.id);
-                    }, 50);
+                    startMoving(button.id);
                 });
 
-                button.addEventListener('mouseup', () => {
-                    clearInterval(moveInterval);
-                    pressed = false;
-                });
-
-                button.addEventListener('mouseleave', () => {
-                    clearInterval(moveInterval);
-                    pressed = false;
-                });
+                button.addEventListener('mouseup', stopMoving);
+                button.addEventListener('mouseleave', stopMoving);
             });
 
             document.addEventListener('keydown', (event) => {
                 if (gameCompleted) return;
                 const key = event.key;
+                const direction = getDirectionFromKey(key);
+                if (direction) startMoving(direction);
+            });
 
+            document.addEventListener('keyup', (event) => {
+                const key = event.key;
+                const direction = getDirectionFromKey(key);
+                if (direction) stopMoving();
+            });
+
+            function getDirectionFromKey(key) {
                 switch (key) {
                     case 'ArrowUp':
-                        moveCircle('up');
-                        break;
-                    case 'ArrowDown':
-                        moveCircle('down');
-                        break;
-                    case 'ArrowLeft':
-                        moveCircle('left');
-                        break;
-                    case 'ArrowRight':
-                        moveCircle('right');
-                        break;
                     case 'w':
-                        moveCircle('up');
-                        break;
-                        case 's':
-                        moveCircle('down');
-                        break;
+                        return 'up';
+                    case 'ArrowDown':
+                    case 's':
+                        return 'down';
+                    case 'ArrowLeft':
                     case 'a':
-                        moveCircle('left');
-                        break;
+                        return 'left';
+                    case 'ArrowRight':
                     case 'd':
-                        moveCircle('right');
-                        break;
+                        return 'right';
                     default:
-                        break;
+                        return null;
                 }
-            });
+            }
+
+            function startMoving(direction) {
+                if (moveInterval) clearInterval(moveInterval);
+                moveCircle(direction);
+                moveInterval = setInterval(() => {
+                    moveCircle(direction);
+                }, 50);
+            }
+
+            function stopMoving() {
+                if (moveInterval) clearInterval(moveInterval);
+            }
 
             function moveCircle(direction) {
                 if (gameCompleted) return;
