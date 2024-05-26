@@ -179,9 +179,14 @@
                     if (gameCompleted) return;
                     startMoving(button.id);
                 });
-
+                button.addEventListener('touchstart', () => {
+                    if (gameCompleted) return;
+                    startMoving(button.id);
+                });
                 button.addEventListener('mouseup', stopMoving);
                 button.addEventListener('mouseleave', stopMoving);
+                button.addEventListener('touchend', stopMoving);
+                button.addEventListener('touchcancel', stopMoving);
             });
 
             document.addEventListener('keydown', (event) => {

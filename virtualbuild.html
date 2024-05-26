@@ -129,7 +129,7 @@
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
+       document.addEventListener('DOMContentLoaded', () => {
             const circle = document.getElementById('circle');
             const messageBox = document.getElementById('message-box');
             const buttons = document.querySelectorAll('.button');
@@ -152,9 +152,14 @@
                     if (gameCompleted) return;
                     startMoving(button.id);
                 });
-
+                button.addEventListener('touchstart', () => {
+                    if (gameCompleted) return;
+                    startMoving(button.id);
+                });
                 button.addEventListener('mouseup', stopMoving);
                 button.addEventListener('mouseleave', stopMoving);
+                button.addEventListener('touchend', stopMoving);
+                button.addEventListener('touchcancel', stopMoving);
             });
 
             document.addEventListener('keydown', (event) => {
