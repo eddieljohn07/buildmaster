@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BuildMaster Certificate Generator</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Encode+Sans+Expanded:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Encode Sans Expanded', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            text-align: center;
+            padding: 20px;
+        }
+
+        h1 {
+            color: #ffffff;
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 800px;
+        }
+
+        input {
+            padding: 10px;
+            font-size: 16px;
+            width: 80%;
+            max-width: 300px;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            margin-top: 10px;
+            cursor: pointer;
+        }
+
+        canvas {
+            display: block;
+            margin-top: 20px;
+            border: 1px solid #ccc;
+            width: 100%;
+            height: auto;
+            max-width: 800px;
+        }
+
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 20px;
+            }
+
+            input, button {
+                font-size: 14px;
+            }
+
+            button {
+                padding: 8px 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Enter your name here:</h1>
+        <input type="text" id="nameInput" placeholder="Your name">
+        <button onclick="generateCertificate()">Generate Certificate</button>
+        <canvas id="certificateCanvas" width="800" height="600"></canvas>
+    </div>
+    <script>
+        function generateCertificate() {
+            const name = document.getElementById('nameInput').value;
+            if (!name) {
+                alert("Please enter your name");
+                return;
+            }
+
+            const canvas = document.getElementById('certificateCanvas');
+            const ctx = canvas.getContext('2d');
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            ctx.fillStyle = '#fff8dc';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+
+            ctx.strokeStyle = '#000';
+            ctx.lineWidth = 5;
+            ctx.strokeRect(10, 10, canvas.width - 20, canvas.height - 20);
+
+            ctx.fillStyle = '#000';
+            ctx.font = 'bold 30px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText('Certificate of Completion', canvas.width / 2, 80);
+
+            ctx.font = '20px Arial';
+            ctx.fillText('This is to certify that', canvas.width / 2, 150);
+
+            ctx.font = 'bold 40px Arial';
+            ctx.fillText(name, canvas.width / 2, 220);
+
+            ctx.font = '20px Arial';
+            ctx.fillText('has successfully completed the', canvas.width / 2, 290);
+            ctx.fillText('BuildMaster virtual PC building interactive game', canvas.width / 2, 320);
+            ctx.fillText('on this day', canvas.width / 2, 350);
+
+            const date = new Date();
+            ctx.fillText(`${date.toDateString()}`, canvas.width / 2, 380);
+
+            ctx.font = 'italic 18px Arial';
+            ctx.fillText('The game showcases PC parts to help you gain knowledge in building PCs.', canvas.width / 2, 450);
+
+            ctx.font = 'bold 24px Arial';
+            ctx.fillText('Congratulations!', canvas.width / 2, 500);
+        }
+    </script>
+</body>
+</html>
