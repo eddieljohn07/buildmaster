@@ -74,6 +74,9 @@
         <button onclick="generateCertificate()">Generate Certificate</button>
         <canvas id="certificateCanvas" width="800" height="600"></canvas>
     </div>
+    <audio loop autoplay>
+        <source src="sound/bgSound.mp3" type="audio/mpeg">
+    </audio>
     <script>
         function generateCertificate() {
             const name = document.getElementById('nameInput').value;
